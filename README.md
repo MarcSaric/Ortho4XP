@@ -1,6 +1,6 @@
 # Ortho4XP
 
-A scenery generator for the X-Plane flight simulator
+A scenery generator for the X-Plane flight simulator by Oscar Pilote and co-workers.
 
 
 NOTICE 1. Windows users: Only use Notepad++ or an equivalent decent editor to read or modify Ortho4XP related files. Notepad doesn't understand linux line-ends and will create a mess. 
