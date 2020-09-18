@@ -349,7 +349,8 @@ def OSM_query_to_OSM_layer(query, bbox, osm_layer, tags_of_interest=[], server_c
 def get_overpass_data(query, bbox, server_code=None):
     tentative = 1
     while True:
-        s = requests.Session()
+        s=requests.Session()
+        true_server_code = server_code
         if not server_code:
            true_server_code = random.choice(list(overpass_servers.keys())) if overpass_server_choice == 'random' else overpass_server_choice
         base_url = overpass_servers[true_server_code]

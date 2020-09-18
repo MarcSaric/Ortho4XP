@@ -434,13 +434,15 @@ def triangulation_to_image(name, pixel_size, grid_size_or_bbox):
     f_ele = open(name + '.1.ele', 'r')
     nbr_tri = int(f_ele.readline().split()[0])
     for i in range(nbr_tri):
-        (n1, n2, n3) = [int(x) - 1 for x in f_ele.readline().split()[1:4]]
-        (x1, y1) = vertices[2 * n1:2 * n1 + 2]
-        (x2, y2) = vertices[2 * n2:2 * n2 + 2]
-        (x3, y3) = vertices[2 * n3:2 * n3 + 2]
-        (px1, py1) = [round((x1 - xmin) / pixel_size), round((y1 - ymin) / pixel_size)]
-        (px2, py2) = [round((x2 - xmin) / pixel_size), round((y2 - ymin) / pixel_size)]
-        (px3, py3) = [round((x3 - xmin) / pixel_size), round((y3 - ymin) / pixel_size)]
+        (n1,n2,n3,tritype)=[int(x)-1 for x in f_ele.readline().split()[1:5]]
+        tritype+=1
+        if not tritype: continue
+        (x1,y1)=vertices[2*n1:2*n1+2]
+        (x2,y2)=vertices[2*n2:2*n2+2]
+        (x3,y3)=vertices[2*n3:2*n3+2]
+        (px1,py1)=[round((x1-xmin)/pixel_size),round((y1-ymin)/pixel_size)]
+        (px2,py2)=[round((x2-xmin)/pixel_size),round((y2-ymin)/pixel_size)]
+        (px3,py3)=[round((x3-xmin)/pixel_size),round((y3-ymin)/pixel_size)]
         try:
             mask_draw.polygon([(px1, py1), (px2, py2), (px3, py3)], fill='white')
         except:
@@ -525,9 +527,9 @@ if __name__ == '__main__':
         reprojection = lambda x, y: pyproj.transform(s_proj, t_proj, x, y)
         multipolygon_area = shapely.ops.transform(reprojection, multipolygon_area)
 
-    vector_map.encode_MultiPolygon(multipolygon_area, VECT.dummy_alt, 'DUMMY', check=True, cut=False)
-    vector_map.write_node_file(name + '.node')
-    vector_map.write_poly_file(name + '.poly')
+    vector_map.encode_MultiPolygon(multipolygon_area,VECT.dummy_alt,'WATER',check=True,cut=False)
+    vector_map.write_node_file(name+'.node')
+    vector_map.write_poly_file(name+'.poly')
     print("Triangulate...")
     MESH.triangulate(name, os.path.join(os.path.dirname(sys.argv[0]), '..'))
     ((xmin, ymin, xmax, ymax), mask_im) = triangulation_to_image(name, pixel_size, grid_size_or_bbox)

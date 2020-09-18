@@ -77,12 +77,12 @@ def initialize_extents_dict():
     for dir_name in os.listdir(FNAMES.Extent_dir):
         if not os.path.isdir(os.path.join(FNAMES.Extent_dir, dir_name)):
             continue
-        for file_name in os.listdir(os.path.join(FNAMES.Extent_dir, dir_name)):
-            if '.' not in file_name or file_name.split('.')[-1] != 'ext': continue
-            extent_code = file_name.split('.')[0]
-            extent = {}
-            f = open(os.path.join(FNAMES.Extent_dir, dir_name, file_name), 'r')
-            valid_extent = True
+        for file_name in os.listdir(os.path.join(FNAMES.Extent_dir,dir_name)):
+            if '.' not in file_name or file_name.split('.')[-1]!='ext': continue
+            extent_code=file_name.split('.')[0]
+            extent={}
+            f=open(os.path.join(FNAMES.Extent_dir,dir_name,file_name),'r',encoding='utf-8')
+            valid_extent=True
             for line in f.readlines():
                 line = line[:-1]
                 if "#" in line: line = line.split('#')[0]
@@ -433,11 +433,11 @@ def initialize_local_combined_providers_dict(tile):
                             if not multipolygon_area.area:
                                 UI.vprint(0, "Error, erroneous OSM data for extent code", name, ", skipped.") 
                                 continue
-                            vector_map.encode_MultiPolygon(multipolygon_area, VECT.dummy_alt, 'DUMMY', check=False, cut=False)
-                            vector_map.write_node_file(name + '.node')
-                            vector_map.write_poly_file(name + '.poly')
-                            MESH.triangulate(name, '.')
-                            ((xmin, ymin, xmax, ymax), mask_im) = MASK.triangulation_to_image(name, pixel_size, (tile.lon - 0.1, tile.lat - 0.1, tile.lon + 1.1, tile.lat + 1.1))
+                            vector_map.encode_MultiPolygon(multipolygon_area,VECT.dummy_alt,'WATER',check=False,cut=False)
+                            vector_map.write_node_file(name+'.node')
+                            vector_map.write_poly_file(name+'.poly')
+                            MESH.triangulate(name,'.')
+                            ((xmin,ymin,xmax,ymax),mask_im)=MASK.triangulation_to_image(name,pixel_size,(tile.lon-0.1,tile.lat-0.1,tile.lon+1.1,tile.lat+1.1))
                             if buffer_width:
                                 mask_im = mask_im.filter(ImageFilter.GaussianBlur(buffer_width / 4))
                                 if buffer_width > 0:
